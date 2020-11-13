@@ -3,14 +3,16 @@
 int main(int argc, char *argv[]) {
 	char marca,matriz[3][3];
 	char jugador='A';
-	int fila,columna;
+	int fila,columna,turnos,empate;
 	printf("\tjuego Triki\n");
 	printf("Elija la marca con la que va a empezar (x-o): \n");
 	scanf("%c",&marca);
+	turnos=0;
+	empate=0;
 	if(marca=='x' || marca=='o'){
 		for(int x=0;x<3;x++){
 			for(int y=0;y<3;y++){
-				matriz[x][y]='s';
+				matriz[x][y]='-';
 			}
 		}
 		for(int x=0;x<3;x++){
@@ -19,7 +21,7 @@ int main(int argc, char *argv[]) {
 				printf("\t%c ",matriz[x][y]);
 			}
 		}
-		for(int i =0;i<9;i++){
+		do{
 			do{
 				printf("\n");
 				printf("\nJugador %c\n",jugador);
@@ -51,12 +53,43 @@ int main(int argc, char *argv[]) {
 					printf("\t%c ",matriz[x][y]);
 				}
 			}
+			if(matriz[fila-1][0]==matriz[fila-1][1] && matriz[fila-1][1]==matriz[fila-1][2]){
+				printf("\n");
+				printf("\nFin del juego\n");
+				printf("\nEl ganador es el jugador %c con marca %c\n",jugador,matriz[fila-1][columna-1]);
+				turnos=10;
+				empate=0;
+			}
+			if(matriz[0][columna-1]==matriz[1][columna-1] && matriz[1][columna-1]==matriz[2][columna-1]){
+				printf("\n");
+				printf("\nFin del juego\n");
+				printf("\nEl ganador es el jugador %c con marca %c\n",jugador,matriz[fila-1][columna-1]);
+				turnos=10;
+				empate=0;
+			}
+			if(matriz[0][0]!='-' && matriz[0][0]==matriz[1][1] && matriz[1][1]==matriz[2][2]){
+				printf("\n");
+				printf("\nFin del juego\n");
+				printf("\nEl ganador es el jugador %c con marca %c\n",jugador,matriz[fila-1][columna-1]);
+				turnos=10;
+				empate=0;
+			}
+			if(matriz[0][2]!='-' && matriz[0][2]==matriz[1][1] && matriz[1][1]==matriz[2][0]){
+				printf("\n");
+				printf("\nFin del juego\n");
+				printf("\nEl ganador es el jugador %c con marca %c\n",jugador,matriz[fila-1][columna-1]);
+				turnos=10;
+				empate=0;
+			}
+			if(empate==8){
+				printf("\nEmpate!\n");
+			}
 			if(marca=='x' && jugador=='A'){
 				marca = 'o';
 				jugador = 'B';
 			}else{
 				if(marca=='o'){
-				marca='x';
+					marca='x';
 				}else{
 					marca='o';
 				}
@@ -65,8 +98,11 @@ int main(int argc, char *argv[]) {
 				}else{
 					jugador='A';
 				}
+				
 			}
-		}
+			turnos++;
+			empate++;
+		}while(turnos<9);
 		printf("\n");
 		
 	}else {
